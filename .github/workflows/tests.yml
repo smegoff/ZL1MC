@@ -28,10 +28,15 @@ jobs:
       - name: Export example
         run: python cam.py examples/stepped_sign.dxf examples/stepped_sign.job.json examples/stepped_sign.gcode
       - name: Build source release
-        run: python build_release.py
+        run: |
+          python build_release.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Path release-output -Force | Out-Null
+          Copy-Item -Path ../DXF-to-Gcode-2.5D-v*.zip -Destination release-output
       - name: Upload tested source release
         if: matrix.python == '3.13'
         uses: actions/upload-artifact@v4
         with:
           name: source-release
-          path: ../DXF-to-Gcode-2.5D-v*.zip
+          path: release-output/DXF-to-Gcode-2.5D-v*.zip
+          if-no-files-found: error
