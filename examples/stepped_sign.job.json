@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "drawing": {
+    "path": "stepped_sign.dxf",
+    "sha256": "614139c67e31bbb454069d9a6c970f25412825b50aad29bcf4504ffdffe58b6e"
+  },
+  "import": {
+    "source_units": "Auto",
+    "scale": 1,
+    "tolerance": 0.02,
+    "origin": "Drawing origin"
+  },
+  "settings": {
+    "safe_z": 5,
+    "spindle": 10000,
+    "spindle_on": true,
+    "check_setup": true,
+    "stock_thickness": 2
+  },
+  "operations": [
+    {
+      "name": "Mark island",
+      "layer": "ENGRAVE",
+      "mode": "Engrave",
+      "depth": 0.2,
+      "stepdown": 0.2,
+      "tool_diameter": 3.175
+    },
+    {
+      "name": "Pocket around island",
+      "layer": "POCKET",
+      "mode": "Pocket",
+      "depth": 1,
+      "stepdown": 0.25,
+      "tool_diameter": 3.175,
+      "stepover": 40
+    },
+    {
+      "name": "Outside with tabs",
+      "layer": "OUTLINE",
+      "mode": "Outside profile",
+      "depth": 2,
+      "stepdown": 0.5,
+      "tool_diameter": 3.175,
+      "tabs": 4,
+      "tab_width": 4,
+      "tab_height": 0.6
+    }
+  ]
+}

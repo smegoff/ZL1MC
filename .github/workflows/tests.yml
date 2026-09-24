@@ -1,0 +1,37 @@
+name: Windows tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.13']
+    env:
+      REQUIRE_TK_TESTS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Check dependencies
+        run: python -m pip check
+      - name: Run CAM and real Tk GUI tests
+        run: python -m unittest discover -s tests -v
+      - name: Export example
+        run: python cam.py examples/stepped_sign.dxf examples/stepped_sign.job.json examples/stepped_sign.gcode
+      - name: Build source release
+        run: python build_release.py
+      - name: Upload tested source release
+        if: matrix.python == '3.13'
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-release
+          path: ../DXF-to-Gcode-2.5D-v*.zip
